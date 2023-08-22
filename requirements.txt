@@ -9,3 +9,4 @@ openpyxl
 streamlit-echarts
 streamlit-extras
 numpy
+boto3
