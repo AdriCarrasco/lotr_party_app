@@ -10,3 +10,4 @@ streamlit-echarts
 streamlit-extras
 numpy
 boto3
+streamlit-autorefresh
