@@ -20,12 +20,13 @@ st.set_page_config(page_title="111 Birthday",
                    layout= "wide")
 # CONFIG DATA
 
-
 aws_access_key_id = st.secrets["aws_key"]
 aws_secret_access_key = st.secrets["aws_secret_key"]
 
 with open("colores_lotr.json") as file:
     colors_lotr = json.load(file)
+with open("textos_juegos.json") as file:
+    textos_juegos = json.load(file)
 
 # FUNCTIONS
 
@@ -73,8 +74,43 @@ def rgb_to_hex(r, g, b):
 def color_func(list_colors):
     return rgb_to_hex(list_colors[0], list_colors[1], list_colors[2])
 
-
-puntos_juegos = GetJSON("dict_points_part1.json")
+try:
+    puntos_juegos = GetJSON("dict_points_part1.json")
+except:
+    puntos_juegos = {
+        "Hombres":{
+            "Equilibrio": 0,
+            "Escenas": 0,
+            "Comida": 0,
+            "Musica": 0,
+            "Twister": 0, 
+            "Softcombat": 0
+        },
+        "Elfos": {
+            "Equilibrio": 0,
+            "Escenas": 0,
+            "Comida": 0,
+            "Musica": 0,
+            "Twister": 0, 
+            "Softcombat": 0
+        },
+        "Enanos": {
+            "Equilibrio": 0,
+            "Escenas": 0,
+            "Comida": 0,
+            "Musica": 0,
+            "Twister": 0, 
+            "Softcombat": 0
+        },
+        "Hobbits":{
+            "Equilibrio": 0,
+            "Escenas": 0,
+            "Comida": 0,
+            "Musica": 0,
+            "Twister": 0, 
+            "Softcombat": 0
+        },
+    }
 
 selected3 = option_menu("",["Juegos", "Tabla"], 
         icons=['file-bar-graph-fill', 'lightning-fill'], 
@@ -92,7 +128,7 @@ if selected3 == "Juegos":
 
     dict_juegos = {
         "UAPTM": ["Equilibrio", "Escenas", "Comida", "Musica", "Twister", "Softcombat"],
-        "Comunidades": ["Nazgul", "Sigilo", "Lorien", "Helm", "Pelennor", "Mordor"]
+        "Comunidades": ["Pelennor"]
         }
     
     with col_0_0:
@@ -105,30 +141,30 @@ if selected3 == "Juegos":
         st.title("Equilibrio")
 
         with st.expander("Descripción"):
-            st.text("Explicación del juego")
+            st.caption(textos_juegos[choice_game]["Descripción"])
 
         col_1_0, col_1_1 = st.columns(2)
 
         with col_1_0:
             with st.expander("Normas"):
-                st.text("Hello")
+                st.caption(textos_juegos[choice_game]["Normas"])
 
         with col_1_1:
             with st.expander("Puntos"):
-                st.text("Hello")
+                st.caption(textos_juegos[choice_game]["Puntos"])
 
         st.title("Marcador")
 
-        points_humans = st.number_input("Puntos Hombres", 0, 10, value = puntos_juegos["Hombres"][choice_game])
-        points_elfs = st.number_input("Puntos Elfos", 0, 10, value = puntos_juegos["Elfos"][choice_game])
-        points_dwarves = st.number_input("Puntos Enanos", 0, 10, value = puntos_juegos["Enanos"][choice_game])
-        points_hobbits = st.number_input("Puntos Hobbits", 0, 10, value = puntos_juegos["Hobbits"][choice_game])
+        points_humans = st.number_input("Puntos Hombres", 0, 25, value = puntos_juegos["Hombres"][choice_game])
+        points_elfs = st.number_input("Puntos Elfos", 0, 25, value = puntos_juegos["Elfos"][choice_game])
+        points_dwarves = st.number_input("Puntos Enanos", 0, 25, value = puntos_juegos["Enanos"][choice_game])
+        points_hobbits = st.number_input("Puntos Hobbits", 0, 25, value = puntos_juegos["Hobbits"][choice_game])
         
         if st.button("Actualizar"):
-            puntos_juegos["Hombres"][choice_game] = points_humans
-            puntos_juegos["Elfos"][choice_game] = points_elfs
-            puntos_juegos["Enanos"][choice_game] = points_dwarves
-            puntos_juegos["Hobbits"][choice_game] = points_hobbits
+            puntos_juegos["Hombres"][choice_game] = int(np.round(points_humans /25 *10,0))
+            puntos_juegos["Elfos"][choice_game] = int(np.round(points_elfs/ 25 * 10, 0))
+            puntos_juegos["Enanos"][choice_game] = int(np.round(points_dwarves / 25 * 10,0))
+            puntos_juegos["Hobbits"][choice_game] = int(np.round(points_hobbits / 25 * 10, 0))
 
             response = PutJSON("dict_points_part1.json", puntos_juegos)
 
@@ -142,17 +178,17 @@ if selected3 == "Juegos":
         st.title("Escenas")
 
         with st.expander("Descripción"):
-            st.text("Explicación del juego")
+            st.caption(textos_juegos[choice_game]["Descripción"])
 
         col_1_0, col_1_1 = st.columns(2)
 
         with col_1_0:
             with st.expander("Normas"):
-                st.text("Hello")
+                st.caption(textos_juegos[choice_game]["Normas"])
 
         with col_1_1:
             with st.expander("Puntos"):
-                st.text("Hello")
+                st.caption(textos_juegos[choice_game]["Puntos"])
 
         st.title("Escenas aleatorias")
 
@@ -222,20 +258,20 @@ if selected3 == "Juegos":
             count = st_autorefresh(interval=2000, limit=100, key="fizzbuzzcounter")
 
     elif choice_part == "UAPTM" and choice_game == "Comida":
-        st.title("Equilibrio")
+        st.title("Comida")
 
         with st.expander("Descripción"):
-            st.text("Explicación del juego")
+            st.caption(textos_juegos[choice_game]["Descripción"])
 
         col_1_0, col_1_1 = st.columns(2)
 
         with col_1_0:
             with st.expander("Normas"):
-                st.text("Hello")
+                st.caption(textos_juegos[choice_game]["Normas"])
 
         with col_1_1:
             with st.expander("Puntos"):
-                st.text("Hello")
+                st.caption(textos_juegos[choice_game]["Puntos"])
 
         st.title("Marcador")
 
@@ -257,6 +293,21 @@ if selected3 == "Juegos":
             count = st_autorefresh(interval=2000, limit=100, key="fizzbuzzcounter")
 
     elif choice_part == "UAPTM" and choice_game == "Musica":
+        
+        st.title("Adivinanza Musical")
+
+        with st.expander("Descripción"):
+            st.caption(textos_juegos[choice_game]["Descripción"])
+
+        col_1_0, col_1_1 = st.columns(2)
+
+        with col_1_0:
+            with st.expander("Normas"):
+                st.caption(textos_juegos[choice_game]["Normas"])
+
+        with col_1_1:
+            with st.expander("Puntos"):
+                st.caption(textos_juegos[choice_game]["Puntos"])
 
         st.title("Marcador")
 
@@ -279,17 +330,17 @@ if selected3 == "Juegos":
         st.title("Twister")
 
         with st.expander("Descripción"):
-            st.text("Explicación del juego")
+            st.caption(textos_juegos[choice_game]["Descripción"])
 
         col_1_0, col_1_1 = st.columns(2)
 
         with col_1_0:
             with st.expander("Normas"):
-                st.text("Hello")
+                st.caption(textos_juegos[choice_game]["Normas"])
 
         with col_1_1:
             with st.expander("Puntos"):
-                st.text("Hello")
+                st.caption(textos_juegos[choice_game]["Puntos"])
 
         st.title("Marcador")
 
@@ -323,18 +374,19 @@ if selected3 == "Juegos":
 
         st.title("Softcombat")
 
+
         with st.expander("Descripción"):
-            st.text("Explicación del juego")
+            st.caption(textos_juegos[choice_game]["Descripción"])
 
         col_1_0, col_1_1 = st.columns(2)
 
         with col_1_0:
             with st.expander("Normas"):
-                st.text("Hello")
+                st.caption(textos_juegos[choice_game]["Normas"])
 
         with col_1_1:
             with st.expander("Puntos"):
-                st.text("Hello")
+                st.caption(textos_juegos[choice_game]["Puntos"])
 
         # Figure Bracket
 
@@ -715,8 +767,8 @@ if selected3 == "Juegos":
             match_boxscore = st.selectbox("Elegir combate", ["match_1", "match_2", "match_3"])
         
         if match_boxscore == "match_1":
-            points_1 = st.number_input(st.session_state["matches_soft"][0],0, 5, 0)
-            points_2 = st.number_input(st.session_state["matches_soft"][1],0, 5, 0)
+            points_1 = st.number_input(st.session_state["matches_soft"][0],0, 10, 0)
+            points_2 = st.number_input(st.session_state["matches_soft"][1],0, 10, 0)
 
             if st.button("Validar Partido 1"):
                 resultado = st.session_state["results"]
@@ -730,8 +782,8 @@ if selected3 == "Juegos":
                 count = st_autorefresh(interval=2000, limit=100, key="fizzbuzzcounter1")
         
         elif match_boxscore == "match_2":
-            points_1 = st.number_input(st.session_state["matches_soft"][2],0, 5, 0)
-            points_2 = st.number_input(st.session_state["matches_soft"][3],0, 5, 0)
+            points_1 = st.number_input(st.session_state["matches_soft"][2],0, 10, 0)
+            points_2 = st.number_input(st.session_state["matches_soft"][3],0, 10, 0)
 
             if st.button("Validar Partido 2"):
                 resultado = st.session_state["results"]
@@ -797,7 +849,27 @@ if selected3 == "Juegos":
             st.info("Reseteo")
             st.session_state["matches_soft"] = list_teams
             count_final = st_autorefresh(interval=2000, limit=100, key="fizzbuzzcounter5")
+    
+    elif choice_part == "Comunidades" and choice_game == "Pelennor":
+        data_preguntas = pd.read_feather("preguntas_y_respuestas.feather")
+
+        choice_difficulty = st.selectbox("Elegir dificultad",pd.unique(data_preguntas["Dificultad"]))
+        questions = data_preguntas[data_preguntas.Dificultad == choice_difficulty]["Pregunta"].tolist()
+
+        col_1_0, col_1_1 = st.columns(2)
+
+        with col_1_0:
+            random.shuffle(questions)
+            st.subheader(questions[1])
         
+        with col_1_1:
+            answer = data_preguntas[data_preguntas.Pregunta == questions[1]]["Respuesta Correcta"].tolist()[0]
+            st.caption(answer)
+        
+        if st.button("Siguiente"):
+            pass
+
+
 
 elif selected3 == "Tabla":
     all_points = GetAllPoints(puntos_juegos)
